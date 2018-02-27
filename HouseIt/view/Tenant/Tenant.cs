@@ -17,6 +17,7 @@ namespace FormTenant
         public Form1()
         {
             InitializeComponent();
+            lblTenantMessage.Text = "Välkommen, " + Constants.LoggedInUser.Username;
         }
 
         ControllerT controller = new ControllerT();
@@ -61,7 +62,7 @@ namespace FormTenant
             /*
              * NOTE: version 1.0 (demonstration purposes only)
              */
-            int tenantId = 1;
+            int tenantId = Constants.LoggedInUser.Tenant.TenantId;
 
             var source = new BindingSource();
             IEnumerable<Case> listOfCases = controller.ControllerLoadMyCases(tenantId);

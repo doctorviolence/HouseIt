@@ -18,24 +18,29 @@ namespace HouseIt.dal
          */
         public IEnumerable<CaseMessage> ReadAllCaseMessagesByCase(int caseNo)
         {
-            try
-            {
-                var sql = "SELECT cm.* FROM CaseMessages cm, Cases c " +
-                    "WHERE c.case_no = cm.case_no " +
-                    "AND c.case_no = :caseNo " +
-                    "ORDER BY cm.message_no;";
+            using (ISession session = _sf.OpenSession())
+                try
+                {
+                    var sql = "SELECT cm.* FROM CaseMessages cm, Cases c " +
+                        "WHERE c.case_no = cm.case_no " +
+                        "AND c.case_no = :caseNo " +
+                        "ORDER BY cm.message_no;";
 
-                IList<CaseMessage> CaseMessages = session.CreateSQLQuery(sql)
-                    .AddEntity(typeof(CaseMessage))
-                    .SetInt32("caseNo", caseNo)
-                    .List<CaseMessage>();
-                return CaseMessages;
-            }
-            catch (Exception e)
-            {
-                MessageBox.Show(e.Message);
-                throw e;
-            }
+                    IList<CaseMessage> CaseMessages = session.CreateSQLQuery(sql)
+                        .AddEntity(typeof(CaseMessage))
+                        .SetInt32("caseNo", caseNo)
+                        .List<CaseMessage>();
+                    return CaseMessages;
+                }
+                catch (Exception e)
+                {
+                    MessageBox.Show(e.Message);
+                    throw e;
+                }
+                finally
+                {
+                    session.Close();
+                }
 
         }
 
@@ -44,17 +49,22 @@ namespace HouseIt.dal
          **/
         public void WriteMessage(string messageText, int caseNo)
         {
-            try
-            {
-                Case cases = new Case(caseNo);
-                CaseMessage newCaseMessage = new CaseMessage(0, messageText, cases);
-                CreateEntity(newCaseMessage);
-            }
-            catch (Exception e)
-            {
-                MessageBox.Show(e.Message);
-                throw e;
-            }
+            using (ISession session = _sf.OpenSession())
+                try
+                {
+                    Case cases = new Case(caseNo);
+                    CaseMessage newCaseMessage = new CaseMessage(0, messageText, cases);
+                    CreateEntity(newCaseMessage);
+                }
+                catch (Exception e)
+                {
+                    MessageBox.Show(e.Message);
+                    throw e;
+                }
+                finally
+                {
+                    session.Close();
+                }
         }
 
 
@@ -63,25 +73,30 @@ namespace HouseIt.dal
          */
         public IEnumerable<CaseMessage> ReadMyCaseMessages(int tenantId, int caseNo)
         {
-            try
-            {
-                var sql = "SELECT cm.* FROM Case_Messages cm, Cases c, Tenants t " +
-                    "WHERE (t.tenant_id = c.tenant_id AND t.tenant_id = :tenantId) " +
-                    "AND (c.case_no = cm.case_no AND c.case_no = :caseNo) " +
-                    "ORDER BY cm.message_no;";
+            using (ISession session = _sf.OpenSession())
+                try
+                {
+                    var sql = "SELECT cm.* FROM Case_Messages cm, Cases c, Tenants t " +
+                        "WHERE (t.tenant_id = c.tenant_id AND t.tenant_id = :tenantId) " +
+                        "AND (c.case_no = cm.case_no AND c.case_no = :caseNo) " +
+                        "ORDER BY cm.message_no;";
 
-                IList<CaseMessage> CaseMessages = session.CreateSQLQuery(sql)
-                    .AddEntity(typeof(CaseMessage))
-                    .SetInt32("tenantId", tenantId)
-                    .SetInt32("caseNo", caseNo)
-                    .List<CaseMessage>();
-                return CaseMessages;
-            }
-            catch (Exception e)
-            {
-                MessageBox.Show(e.Message);
-                throw e;
-            }
+                    IList<CaseMessage> CaseMessages = session.CreateSQLQuery(sql)
+                        .AddEntity(typeof(CaseMessage))
+                        .SetInt32("tenantId", tenantId)
+                        .SetInt32("caseNo", caseNo)
+                        .List<CaseMessage>();
+                    return CaseMessages;
+                }
+                catch (Exception e)
+                {
+                    MessageBox.Show(e.Message);
+                    throw e;
+                }
+                finally
+                {
+                    session.Close();
+                }
         }
 
         /**
@@ -89,27 +104,31 @@ namespace HouseIt.dal
          **/
         public void ReplyToMessage(int tenantId, string messageText, int caseNo)
         {
-            try
-            {
-                IEnumerable<CaseMessage> CaseMessages = ReadMyCaseMessages(tenantId, caseNo);
-                if (CaseMessages != null)
+            using (ISession session = _sf.OpenSession())
+                try
                 {
-                    Case cases = new Case(caseNo);
-                    CaseMessage newCaseMessage = new CaseMessage(0, messageText, cases);
-                    CreateEntity(newCaseMessage);
+                    IEnumerable<CaseMessage> CaseMessages = ReadMyCaseMessages(tenantId, caseNo);
+                    if (CaseMessages != null)
+                    {
+                        Case cases = new Case(caseNo);
+                        CaseMessage newCaseMessage = new CaseMessage(0, messageText, cases);
+                        CreateEntity(newCaseMessage);
+                    }
+                    else
+                    {
+                        Console.WriteLine("No messages.");
+                    }
+
                 }
-                else
+                catch (Exception e)
                 {
-                    Console.WriteLine("No messages.");
+                    MessageBox.Show(e.Message);
+                    throw e;
                 }
-
-            }
-            catch (Exception e)
-            {
-                MessageBox.Show(e.Message);
-                throw e;
-            }
-
+                finally
+                {
+                    session.Close();
+                }
         }
     }
 

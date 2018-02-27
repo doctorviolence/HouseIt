@@ -29,6 +29,7 @@
         private void InitializeComponent()
         {
             this.tabPage1 = new System.Windows.Forms.TabPage();
+            this.lblMyMessage = new System.Windows.Forms.Label();
             this.btnRefresh = new System.Windows.Forms.Button();
             this.DGMyCases = new System.Windows.Forms.DataGridView();
             this.reportCase = new System.Windows.Forms.TabPage();
@@ -44,7 +45,7 @@
             this.CBReportWhat = new System.Windows.Forms.ComboBox();
             this.lblWhatsWrong = new System.Windows.Forms.Label();
             this.tabControl1 = new System.Windows.Forms.TabControl();
-            this.lblMyMessage = new System.Windows.Forms.Label();
+            this.lblTenantMessage = new System.Windows.Forms.Label();
             this.tabPage1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.DGMyCases)).BeginInit();
             this.reportCase.SuspendLayout();
@@ -63,6 +64,15 @@
             this.tabPage1.TabIndex = 3;
             this.tabPage1.Text = "Mina Anmälningar";
             this.tabPage1.UseVisualStyleBackColor = true;
+            // 
+            // lblMyMessage
+            // 
+            this.lblMyMessage.AutoSize = true;
+            this.lblMyMessage.Location = new System.Drawing.Point(6, 533);
+            this.lblMyMessage.Name = "lblMyMessage";
+            this.lblMyMessage.Size = new System.Drawing.Size(78, 17);
+            this.lblMyMessage.TabIndex = 2;
+            this.lblMyMessage.Text = "Status: Kör";
             // 
             // btnRefresh
             // 
@@ -85,6 +95,7 @@
             // 
             // reportCase
             // 
+            this.reportCase.Controls.Add(this.lblTenantMessage);
             this.reportCase.Controls.Add(this.btnSendWW);
             this.reportCase.Controls.Add(this.textBoxProblemT);
             this.reportCase.Controls.Add(this.lblProblem);
@@ -241,14 +252,13 @@
             this.tabControl1.Size = new System.Drawing.Size(986, 585);
             this.tabControl1.TabIndex = 0;
             // 
-            // lblMyMessage
+            // lblTenantMessage
             // 
-            this.lblMyMessage.AutoSize = true;
-            this.lblMyMessage.Location = new System.Drawing.Point(6, 533);
-            this.lblMyMessage.Name = "lblMyMessage";
-            this.lblMyMessage.Size = new System.Drawing.Size(78, 17);
-            this.lblMyMessage.TabIndex = 2;
-            this.lblMyMessage.Text = "Status: Kör";
+            this.lblTenantMessage.AutoSize = true;
+            this.lblTenantMessage.Location = new System.Drawing.Point(17, 518);
+            this.lblTenantMessage.Name = "lblTenantMessage";
+            this.lblTenantMessage.Size = new System.Drawing.Size(0, 17);
+            this.lblTenantMessage.TabIndex = 13;
             // 
             // Form1
             // 
@@ -257,7 +267,7 @@
             this.ClientSize = new System.Drawing.Size(1007, 604);
             this.Controls.Add(this.tabControl1);
             this.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
-            this.Name = "HouseIt - Tenant";
+            this.Name = "Form1";
             this.Text = "HouseIt - Tenant";
             this.tabPage1.ResumeLayout(false);
             this.tabPage1.PerformLayout();
@@ -288,6 +298,7 @@
         private System.Windows.Forms.Button btnRefresh;
         private System.Windows.Forms.DataGridView DGMyCases;
         private System.Windows.Forms.Label lblMyMessage;
+        private System.Windows.Forms.Label lblTenantMessage;
     }
 }
 

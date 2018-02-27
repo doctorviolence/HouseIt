@@ -1,12 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Data;
-using System.Data.SqlClient;
-using System.Configuration;
-using HouseIt.entities;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using NHibernate;
 using HouseIt.util;
 using System.Windows.Forms;
@@ -16,41 +9,52 @@ namespace HouseIt.dal
     public class BaseRepository<T> : IBaseRepository<T> where T : class
     {
 
-        protected static ISession session = NHibernateManager.OpenSession();
+        protected static ISessionFactory _sf = NHibernateManager.BuildSessionFactory();
 
         public IEnumerable<T> GetEntities(T entity)
         {
-            try
-            {
-                var entities = session.CreateCriteria<T>().List<T>();
-                return entities;
-            }
-            catch (Exception e)
-            {
-                MessageBox.Show(e.Message);
-                throw e;
-            }
+            using (ISession session = _sf.OpenSession())
+                try
+                {
+                    var entities = session.CreateCriteria<T>().List<T>();
+                    return entities;
+                }
+                catch (Exception e)
+                {
+                    MessageBox.Show(e.Message);
+                    throw e;
+                }
+                finally
+                {
+                    session.Close();
+                }
         }
 
         public T FindEntityById(object id)
         {
-            try
-            {
-                var entity = session.Get<T>(id);
-                return entity;
-            }
-            catch (Exception e)
-            {
+            using (ISession session = _sf.OpenSession())
+                try
+                {
 
-                MessageBox.Show(e.Message);
-                throw e;
-            }
+                    var entity = session.Get<T>(id);
+                    return entity;
+                }
+                catch (Exception e)
+                {
+
+                    MessageBox.Show(e.Message);
+                    throw e;
+                }
+                finally
+                {
+                    session.Close();
+                }
         }
 
         public void CreateEntity(T entity)
         {
+            using (ISession session = _sf.OpenSession())
             using (ITransaction tx = session.BeginTransaction())
-            {
                 try
                 {
                     session.Save(entity);
@@ -62,13 +66,17 @@ namespace HouseIt.dal
                     MessageBox.Show(e.Message);
                     throw e;
                 }
-            }
+                finally
+                {
+                    session.Close();
+                }
         }
+
 
         public void UpdateEntity(T entity)
         {
+            using (ISession session = _sf.OpenSession())
             using (ITransaction tx = session.BeginTransaction())
-            {
                 try
                 {
                     session.SaveOrUpdate(entity);
@@ -80,13 +88,16 @@ namespace HouseIt.dal
                     MessageBox.Show(e.Message);
                     throw e;
                 }
-            }
+                finally
+                {
+                    session.Close();
+                }
         }
 
         public void DeleteEntity(T entity)
         {
+            using (ISession session = _sf.OpenSession())
             using (ITransaction tx = session.BeginTransaction())
-            {
                 try
                 {
                     session.Delete(entity);
@@ -98,8 +109,12 @@ namespace HouseIt.dal
                     MessageBox.Show(e.Message);
                     throw e;
                 }
-            }
+                finally
+                {
+                    session.Close();
+                }
         }
+
 
     }
 }

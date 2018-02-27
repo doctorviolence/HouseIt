@@ -19,75 +19,69 @@ namespace FormLandlord
         {
             InitializeComponent();
             UserRefresh();
-
+            BuildingRefresh();
+            ApartmentRefresh();
+            BuildingComboBoxRefresh();
+            ToDoRefresh();
         }
 
-        private void label4_Click(object sender, EventArgs e)
+
+        //---------------------TO DO------------------------------------------------------------
+        private void btnToDoRefresh_Click(object sender, EventArgs e)
         {
-
+            ToDoRefresh();
+            lblToDoMessage.Text = "Ärenden inlästa.";
         }
 
-        // DONE
         private void btnToDoDone_Click(object sender, EventArgs e)
         {
-            if (DGToDo.CurrentCell is null)
-            {
-                lblToDoMessage.Text = "Välj ett ärende att markera som färdigt!";
-            }
-            else
+            if (DGToDo.CurrentRow.Cells[0].Value != null)
             {
                 Case selectedCase = (Case)DGToDo.CurrentRow.DataBoundItem;
                 int id = selectedCase.CaseNo;
                 controller.ControllerMarkCaseAsResolved(id);
                 lblToDoMessage.Text = "Markerad som färdig";
+                ToDoRefresh();
+            }
+            else
+            {
+                lblToDoMessage.Text = "Välj ett ärende att markera som färdigt!";
             }
         }
 
-        // I removed the filtering action here because it's insta recipe for SQL Injection
-        private void btnToDoRefresh_Click(object sender, EventArgs e)
+        private void btnToDoDelete_Click(object sender, EventArgs e)//DAL problem
         {
-            string selectedText = CBType.SelectedText.ToString();
-
-            var source = new BindingSource();
-            List<Case> listOfCases = controller.ControllerRefresh();
-            source.DataSource = listOfCases;
-            DGToDo.DataSource = source;
-            DGToDo.AutoGenerateColumns = true;
-            lblToDoMessage.Text = "Ärenden inlästa.";
-        }
-
-        // DONE
-        private void btnToDoDelete_Click(object sender, EventArgs e)
-        {
-            if ((DGToDo.CurrentCell is null))
+            if (DGToDo.CurrentRow.Cells[0].Value != null)
+            {
+                int id = Int32.Parse(DGToDo.CurrentRow.Cells[0].Value.ToString());
+                controller.ControllerDelete(id);
+                ToDoRefresh();
+                lblToDoMessage.Text = "Borttagen!";
+            }
+            else
             {
                 lblToDoMessage.Text = "Välj ett ärende att ta bort!";
             }
-            else
-            {
-                Case selectedCase = (Case)DGToDo.CurrentRow.DataBoundItem;
-                int id = selectedCase.CaseNo;
-                controller.ControllerDelete(id);
-                lblToDoMessage.Text = "Borttagen!";
-            }
         }
 
-        // DONE
         private void btnToDoSetFixDate_Click(object sender, EventArgs e)
         {
             string date = dateTimePicker1.Value.ToString();
-            if (DGToDo.CurrentCell is null)
-            {
-                lblToDoMessage.Text = "Välj ett ärende att sätta datumet för!";
-            }
-            else
+            if (DGToDo.CurrentRow.Cells[0].Value != null)
             {
                 Case selectedCase = (Case)DGToDo.CurrentRow.DataBoundItem;
                 int id = selectedCase.CaseNo;
                 controller.ControllerSetFixDate(id, date);
+                ToDoRefresh();
                 lblToDoMessage.Text = "Åtgärdsdatum satt";
             }
+            else
+            {
+                lblToDoMessage.Text = "Välj ett ärende att sätta datumet för!";
+            }
         }
+
+        //-------------------User-------------------------------
 
         private void btnUserCreate_Click(object sender, EventArgs e)
         {
@@ -115,6 +109,8 @@ namespace FormLandlord
             {
                 int house = Int32.Parse(CBUserHouse.SelectedItem.ToString().Substring(0, 1));
                 lblUserMessage.Text = controller.ControllerCreateAccount(user, password, firstName, lastName, aptNo, house, admin);
+                UserClearFields();
+                UserRefresh();
             }
         }
 
@@ -126,15 +122,17 @@ namespace FormLandlord
             string last = txtUserAptLL.Text;
             if (CBAdmin.Checked == true)
             {
-                if (!txtUserUsernameLL.Text.Equals("") && !txtUserPasswordLL.Equals("") && !CBUserHouse.SelectedText.Equals(""))
+                if (!txtUserPasswordLL.Text.Equals("") && CBUserHouse.SelectedItem != null)
                 {
-                    //controller.ControllerEditUser(user, password);
-                    //controller.ControllerEditManager(user, CBUserHouse.SelectedText.Substring(0, 3));
+                    controller.ControllerEditUser(user, password);
+                    //controller.ControllerEditManager(user, CBUserHouse.SelectedItem.ToString());
                     lblUserMessage.Text = "Administratör uppdaterad!";
+                    UserClearFields();
+                    UserRefresh();
                 }
                 else
                 {
-                    lblUserMessage.Text = "Vänligen kontrollera att användarnamn, lösenord och byggnad har valts korrekt!";
+                    lblUserMessage.Text = "Admin, Vänligen kontrollera att användarnamn, lösenord och byggnad har valts korrekt!";
                 }
             }
             else
@@ -144,34 +142,50 @@ namespace FormLandlord
                     //controller.ControllerEditUser(user, password);
                     //controller.ControllerEditTenant(user, name, last, CBUserApt.SelectedText.Substring(0, 4));
                     lblUserMessage.Text = "Hyresgäst uppdaterad!";
+                    UserClearFields();
+                    UserRefresh();
                 }
                 else
                 {
-                    lblUserMessage.Text = "Vänligen kontrollera att användarnamn, lösenord, namn, efternamn och lägenhet har valts korrekt!";
+                    lblUserMessage.Text = "Hyresgäst, Vänligen kontrollera att användarnamn, lösenord, namn, efternamn och lägenhet har valts korrekt!";
                 }
             }
         }
-
-        // Metoden funkar inte. Nonrespons när man klickar på delete knapp, kollat om det är rätt path?
-        private void btnUserDelete_Click(object sender, EventArgs e)
+        private void btnUserDelete_Click_1(object sender, EventArgs e)
         {
             User selectedUser = (User)dGWNewUser.CurrentRow.DataBoundItem;
-            string userId = selectedUser.Username.ToString();
-            controller.ControllerDeleteUser(userId);
-            lblUserMessage.Text = "Borttagen!";
+            String userId;
+            if (dGWNewUser.CurrentRow.Cells[0].Value != null)
+            {
+                userId = dGWNewUser.CurrentRow.Cells[0].Value.ToString();
+            }
+            else if (txtUserUsernameLL.Text != null || txtUserUsernameLL.Text.Equals(""))
+            {
+                userId = txtUserUsernameLL.Text;
+            }
+            else
+            {
+                lblUserMessage.Text = "Ange Användare!";
+                userId = "0";
+            }
+
+
+            if (CBAdmin.Checked == true)
+            {
+                controller.ControllerDeleteUser(userId);
+                //controller.ControllerDeleteManager(userId);
+                lblUserMessage.Text = "Borttagen! A";
+                UserRefresh();
+            }
+            else
+            {
+                controller.ControllerDeleteUser(userId);
+                //controller.ControllerDeleteTenant(userId);
+                lblUserMessage.Text = "Borttagen! T";
+                UserRefresh();
+            }
+            UserClearFields();
         }
-
-        /* Done
-        private void btnUserRefresh_Click(object sender, EventArgs e)
-        {
-            var source = new BindingSource();
-            List<User> listOfUsers = controller.ControllerLoadUsers();
-            source.DataSource = listOfUsers;
-            dGWNewUser.DataSource = source;
-            dGWNewUser.AutoGenerateColumns = true;
-            lblUserMessage.Text = "Användare inlästa.";
-
-        }*/
 
         private void btnUserRefresh_Click(object sender, EventArgs e)
         {
@@ -199,7 +213,7 @@ namespace FormLandlord
             foreach (Tenant t in tenants)
             {
                 if (t.Apartment.ApartmentNo == intAptNr)
-                { //Ladda in apts via dal också?
+                {
                     string[] row = { t.FirstName, t.LastName };
                     DGToDo.Rows.Add(row);
                 }
@@ -207,14 +221,140 @@ namespace FormLandlord
             lblUserMessage.Text = "Användare inlästa.";
         }
 
-        // Done
+
+
+        public void UserClearFields()
+        {
+            txtUserUsernameLL.Clear();
+            txtUserPasswordLL.Clear();
+            txtUserEmailLL.Clear();
+            txtUserAptLL.Clear();
+        }
+
+        //Buildings---------------Apartments
+
+        private void btnBuildApartmentRefresh_Click(object sender, EventArgs e)
+        {
+            ApartmentRefresh();
+            lblBuildMessage.Text = "Lägenheter inlästa.";
+        }
+
+        private void btnBuildAptAdd_Click(object sender, EventArgs e)
+        {
+            int aptNo = (int)NumBuildAptNo.Value;
+            int size = (int)NumBuildAptSize.Value;
+            int floor = (int)NumBuildAptFloor.Value;
+            int buildingNo = Int32.Parse(CBBuildBuilding.Text);//Null exec
+
+            controller.ControllerCreateApartment(aptNo, size, floor, buildingNo);
+            lblBuildMessage.Text = "Lägenhet tillagd.";
+            ApartmentRefresh();
+        }
+
+        private void btnBuildAptEdit_Click(object sender, EventArgs e)
+        {
+            //int aptNo = Int32.Parse(DGBuildApartments.CurrentRow.Cells[0].Value.ToString());
+            int size = (int)NumBuildAptSize.Value;
+            int floor = (int)NumBuildAptFloor.Value;
+            int buildingNo = Int32.Parse(CBBuildBuilding.Text);//Null exec
+
+            controller.ControllerEditApartment(size, floor, buildingNo);
+            lblBuildMessage.Text = "Lägenhet ändrad.";
+            ApartmentRefresh();
+        }
+        private void btnBuildAptDelete_Click(object sender, EventArgs e)
+        {
+            int aptNo = Int32.Parse(DGBuildApartments.CurrentRow.Cells[0].Value.ToString());
+            controller.ControllerDeleteApartment(aptNo);
+            lblBuildMessage.Text = "Lägenhet borttagen.";
+            ApartmentRefresh();
+        }
+
+        private void CBBuildBuilding_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            DGBuildApartments.Rows.Clear();
+            int id = Int32.Parse(CBBuildBuilding.Text);
+            IEnumerable<Apartment> apartments = controller.ControllerLoadApartments(id);
+            foreach (Apartment a in apartments)
+            {
+                string[] row = { a.ApartmentNo.ToString(), a.Size.ToString(), a.Size.ToString() };
+                DGBuildApartments.Rows.Add(row);
+            }
+        }
+
+        //Buildings------------------Buildings
+
+        private void btnBuildBuildingsRefresh_Click(object sender, EventArgs e)
+        {
+            BuildingRefresh();
+            lblBuildMessage.Text = "Byggnader inlästa.";
+        }
+
+
+        private void btnBuildBuildingCreate_Click(object sender, EventArgs e)
+        {
+            controller.ControllerCreateBuilding(txtBuildAdress.Text);
+            BuildingRefresh();
+            lblBuildMessage.Text = "Byggnad tillagd.";
+            BuildingComboBoxRefresh();
+        }
+        private void btnBuildBuildingEdit_Click(object sender, EventArgs e)
+        {
+            string buildId;
+            string address;
+
+            if (DGBuildBuildings.CurrentRow.Cells[0].Value != null && txtBuildAdress.Text != "")
+            {
+                buildId = DGBuildBuildings.CurrentRow.Cells[0].Value.ToString();
+                address = txtBuildAdress.Text;
+                controller.ControllerEditBuilding(buildId, address);
+                BuildingRefresh();
+                lblBuildMessage.Text = "Byggnad ändrad.";
+            }
+            else
+            {
+                lblBuildMessage.Text = "Vänligen välj en byggnad ur listan!";
+            }
+
+        }
+
+        private void btnBuildBuildingDelete_Click(object sender, EventArgs e)
+        {
+            string buildId;
+            if (DGBuildBuildings.CurrentRow.Cells[0].Value != null)
+            {
+                buildId = DGBuildBuildings.CurrentRow.Cells[0].Value.ToString();
+                controller.ControllerDeleteBuilding(buildId);
+                BuildingRefresh();
+                lblBuildMessage.Text = "Byggnad borttagen.";
+            }
+            else
+            {
+                lblBuildMessage.Text = "Vänligen välj en byggnad ur listan!";
+            }
+        }
+
+
+        //------------REFRESH----------------------
+        private void ToDoRefresh()
+        {        // I removed the filtering action here because it's insta recipe for SQL Injection
+
+            string selectedText = CBType.SelectedText.ToString();
+
+            var source = new BindingSource();
+            List<Case> listOfCases = controller.ControllerRefresh();
+            source.DataSource = listOfCases;
+            DGToDo.DataSource = source;
+            DGToDo.AutoGenerateColumns = true;
+        }
+
         public void UserRefresh()
         {
             dGWNewUser.Rows.Clear();
             IEnumerable<User> users = controller.ControllerLoadUsers();
             foreach (User u in users)
             {
-                string[] row = { u.Username };
+                string[] row = { u.Username, u.Password };
                 dGWNewUser.Rows.Add(row);
             }
             lblUserMessage.Text = "Användare inlästa.";
@@ -227,8 +367,38 @@ namespace FormLandlord
             }
         }
 
+        private void BuildingRefresh()
+        {
+            DGBuildBuildings.Rows.Clear();
+            IEnumerable<Building> buildings = controller.ControllerLoadBuildings();
+            foreach (Building b in buildings)
+            {
+                string[] row = { b.BuildingId.ToString(), b.Address };
+                DGBuildBuildings.Rows.Add(row);
+            }
+        }
 
+        private void ApartmentRefresh()
+        {
+            DGBuildApartments.Rows.Clear();
+            IEnumerable<Apartment> apartments = controller.ControllerLoadApartments();
+            foreach (Apartment a in apartments)
+            {
+                string[] row = { a.ApartmentNo.ToString(), a.Size.ToString(), a.Size.ToString() };
+                DGBuildApartments.Rows.Add(row);
+            }
+        }
 
+        private void BuildingComboBoxRefresh()
+        {
+            CBBuildBuilding.Items.Clear();
+            IEnumerable<Building> buildings = controller.ControllerLoadBuildings();
+            foreach (Building b in buildings)
+            {
+                string row = b.BuildingId.ToString();
+                CBBuildBuilding.Items.Add(row);
+            }
+        }
     }
 
 }

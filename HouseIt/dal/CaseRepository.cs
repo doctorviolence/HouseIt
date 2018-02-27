@@ -19,17 +19,22 @@ namespace HouseIt.dal
          **/
         public void AddFixDate(int caseNo, string fixDate)
         {
-            try
-            {
-                Case caseById = FindEntityById(caseNo);
-                caseById.FixDate = fixDate;
-                UpdateEntity(caseById);
-            }
-            catch (Exception e)
-            {
-                MessageBox.Show(e.Message);
-                throw e;
-            }
+            using (ISession session = _sf.OpenSession())
+                try
+                {
+                    Case caseById = FindEntityById(caseNo);
+                    caseById.FixDate = fixDate;
+                    UpdateEntity(caseById);
+                }
+                catch (Exception e)
+                {
+                    MessageBox.Show(e.Message);
+                    throw e;
+                }
+                finally
+                {
+                    session.Close();
+                }
         }
 
         /**
@@ -37,33 +42,43 @@ namespace HouseIt.dal
          **/
         public void MarkCaseAsResolved(int caseNo)
         {
-            try
-            {
-                Case selectedCase = FindEntityById(caseNo);
-                selectedCase.Resolved = "Yes";
-                UpdateEntity(selectedCase);
-            }
-            catch (Exception e)
-            {
-                MessageBox.Show(e.Message);
-                throw e;
-            }
+            using (ISession session = _sf.OpenSession())
+                try
+                {
+                    Case selectedCase = FindEntityById(caseNo);
+                    selectedCase.Resolved = "Yes";
+                    UpdateEntity(selectedCase);
+                }
+                catch (Exception e)
+                {
+                    MessageBox.Show(e.Message);
+                    throw e;
+                }
+                finally
+                {
+                    session.Close();
+                }
         }
 
         public IEnumerable<Case> GetCasesByFixDate()
         {
-            try
-            {
-                var sql = "SELECT c.* FROM Cases c WHERE c.fix_date IS NOT NULL ORDER BY c.fix_date;";
+            using (ISession session = _sf.OpenSession())
+                try
+                {
+                    var sql = "SELECT c.* FROM Cases c WHERE c.fix_date IS NOT NULL ORDER BY c.fix_date;";
 
-                IList<Case> Cases = session.CreateSQLQuery(sql).AddEntity(typeof(Case)).List<Case>();
-                return Cases;
-            }
-            catch (Exception e)
-            {
-                MessageBox.Show(e.Message);
-                throw e;
-            }
+                    IList<Case> Cases = session.CreateSQLQuery(sql).AddEntity(typeof(Case)).List<Case>();
+                    return Cases;
+                }
+                catch (Exception e)
+                {
+                    MessageBox.Show(e.Message);
+                    throw e;
+                }
+                finally
+                {
+                    session.Close();
+                }
         }
 
         /**
@@ -71,23 +86,28 @@ namespace HouseIt.dal
          **/
         public IEnumerable<Case> SortCasesByCategory(string caseType)
         {
-            try
-            {
-                var sql = "SELECT c.* FROM Cases c " +
-                    "WHERE c.case_type = :caseType " +
-                    "ORDER BY c.case_date;";
+            using (ISession session = _sf.OpenSession())
+                try
+                {
+                    var sql = "SELECT c.* FROM Cases c " +
+                        "WHERE c.case_type = :caseType " +
+                        "ORDER BY c.case_date;";
 
-                IList<Case> Cases = session.CreateSQLQuery(sql)
-                    .AddEntity(typeof(Case))
-                    .SetString("caseType", caseType)
-                    .List<Case>();
-                return Cases;
-            }
-            catch (Exception e)
-            {
-                MessageBox.Show(e.Message);
-                throw e;
-            }
+                    IList<Case> Cases = session.CreateSQLQuery(sql)
+                        .AddEntity(typeof(Case))
+                        .SetString("caseType", caseType)
+                        .List<Case>();
+                    return Cases;
+                }
+                catch (Exception e)
+                {
+                    MessageBox.Show(e.Message);
+                    throw e;
+                }
+                finally
+                {
+                    session.Close();
+                }
         }
 
         /**
@@ -95,23 +115,28 @@ namespace HouseIt.dal
          */
         public IEnumerable<Case> FindMyCases(int tenantId)
         {
-            try
-            {
-                var sql = "SELECT c.* " +
-                    "FROM Cases c, Tenants t WHERE t.tenant_id = c.tenant_id " +
-                    "AND t.tenant_id = :id";
+            using (ISession session = _sf.OpenSession())
+                try
+                {
+                    var sql = "SELECT c.* " +
+                        "FROM Cases c, Tenants t WHERE t.tenant_id = c.tenant_id " +
+                        "AND t.tenant_id = :id";
 
-                IList<Case> MyCases = session.CreateSQLQuery(sql)
-                    .AddEntity(typeof(Case))
-                    .SetInt32("id", tenantId)
-                    .List<Case>();
-                return MyCases;
-            }
-            catch (Exception e)
-            {
-                MessageBox.Show(e.Message);
-                throw e;
-            }
+                    IList<Case> MyCases = session.CreateSQLQuery(sql)
+                        .AddEntity(typeof(Case))
+                        .SetInt32("id", tenantId)
+                        .List<Case>();
+                    return MyCases;
+                }
+                catch (Exception e)
+                {
+                    MessageBox.Show(e.Message);
+                    throw e;
+                }
+                finally
+                {
+                    session.Close();
+                }
         }
 
 

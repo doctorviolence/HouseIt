@@ -63,6 +63,8 @@ namespace FormLandlord
             this.lblUserMessage = new System.Windows.Forms.Label();
             this.btnUserRefresh = new System.Windows.Forms.Button();
             this.dGWNewUser = new System.Windows.Forms.DataGridView();
+            this.Användarnamn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.cPass = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.lblUserAppartment = new System.Windows.Forms.Label();
             this.lblUserHouse = new System.Windows.Forms.Label();
             this.CBUserApt = new System.Windows.Forms.ComboBox();
@@ -77,23 +79,44 @@ namespace FormLandlord
             this.lblUserPassword = new System.Windows.Forms.Label();
             this.lblUserUsername = new System.Windows.Forms.Label();
             this.tabPage1 = new System.Windows.Forms.TabPage();
-            this.Användarnamn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.CBBuildBuilding = new System.Windows.Forms.ComboBox();
-            this.NumBuildAptNo = new System.Windows.Forms.NumericUpDown();
-            this.NumBuildAptSize = new System.Windows.Forms.NumericUpDown();
-            this.NumBuildAptFloor = new System.Windows.Forms.NumericUpDown();
-            this.btnBuildAptAdd = new System.Windows.Forms.Button();
+            this.btnBuildBuildingsRefresh = new System.Windows.Forms.Button();
+            this.lblBuildMessage = new System.Windows.Forms.Label();
+            this.btnBuildBuildingDelete = new System.Windows.Forms.Button();
+            this.btnBuildBuildingEdit = new System.Windows.Forms.Button();
+            this.btnBuildBuildingCreate = new System.Windows.Forms.Button();
+            this.txtBuildAdress = new System.Windows.Forms.TextBox();
+            this.DGBuildBuildings = new System.Windows.Forms.DataGridView();
+            this.cBuildingNo = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.cAddress = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.lblBuildBuildingTop = new System.Windows.Forms.Label();
+            this.lblBuildApartmentTop = new System.Windows.Forms.Label();
+            this.lblBuildFloor = new System.Windows.Forms.Label();
+            this.lblBuildSize = new System.Windows.Forms.Label();
+            this.lblApartmentNo = new System.Windows.Forms.Label();
+            this.lblBuildApartment = new System.Windows.Forms.Label();
+            this.btnBuildApartmentRefresh = new System.Windows.Forms.Button();
+            this.DGBuildApartments = new System.Windows.Forms.DataGridView();
+            this.cAptNo = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.cSize = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.cFloor = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.btnBuildAptDelete = new System.Windows.Forms.Button();
             this.btnBuildAptEdit = new System.Windows.Forms.Button();
-            this.btnBuildAptRemove = new System.Windows.Forms.Button();
+            this.btnBuildAptAdd = new System.Windows.Forms.Button();
+            this.NumBuildAptFloor = new System.Windows.Forms.NumericUpDown();
+            this.NumBuildAptSize = new System.Windows.Forms.NumericUpDown();
+            this.NumBuildAptNo = new System.Windows.Forms.NumericUpDown();
+            this.CBBuildBuilding = new System.Windows.Forms.ComboBox();
             this.tabPage2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.DGToDo)).BeginInit();
             this.tabControl1.SuspendLayout();
             this.tabPage5.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dGWNewUser)).BeginInit();
             this.tabPage1.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.NumBuildAptNo)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.NumBuildAptSize)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.DGBuildBuildings)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.DGBuildApartments)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.NumBuildAptFloor)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.NumBuildAptSize)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.NumBuildAptNo)).BeginInit();
             this.SuspendLayout();
             // 
             // tabPage2
@@ -144,9 +167,12 @@ namespace FormLandlord
             // 
             // DGToDo
             // 
+            this.DGToDo.AllowUserToAddRows = false;
+            this.DGToDo.AllowUserToDeleteRows = false;
             this.DGToDo.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.DGToDo.Location = new System.Drawing.Point(308, 18);
             this.DGToDo.Name = "DGToDo";
+            this.DGToDo.ReadOnly = true;
             this.DGToDo.RowTemplate.Height = 24;
             this.DGToDo.Size = new System.Drawing.Size(824, 520);
             this.DGToDo.TabIndex = 8;
@@ -402,15 +428,30 @@ namespace FormLandlord
             // 
             // dGWNewUser
             // 
+            this.dGWNewUser.AllowUserToAddRows = false;
+            this.dGWNewUser.AllowUserToDeleteRows = false;
             this.dGWNewUser.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dGWNewUser.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
-            this.Användarnamn});
+            this.Användarnamn,
+            this.cPass});
             this.dGWNewUser.Location = new System.Drawing.Point(665, 69);
             this.dGWNewUser.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.dGWNewUser.Name = "dGWNewUser";
+            this.dGWNewUser.ReadOnly = true;
             this.dGWNewUser.RowTemplate.Height = 28;
             this.dGWNewUser.Size = new System.Drawing.Size(395, 444);
             this.dGWNewUser.TabIndex = 18;
+            // 
+            // Användarnamn
+            // 
+            this.Användarnamn.HeaderText = "cUsername";
+            this.Användarnamn.Name = "Användarnamn";
+            this.Användarnamn.Width = 251;
+            // 
+            // cPass
+            // 
+            this.cPass.HeaderText = "Lösenord";
+            this.cPass.Name = "cPass";
             // 
             // lblUserAppartment
             // 
@@ -457,6 +498,7 @@ namespace FormLandlord
             this.btnUserDelete.TabIndex = 10;
             this.btnUserDelete.Text = "Ta bort";
             this.btnUserDelete.UseVisualStyleBackColor = true;
+            this.btnUserDelete.Click += new System.EventHandler(this.btnUserDelete_Click_1);
             // 
             // btnUserEdit
             // 
@@ -530,7 +572,22 @@ namespace FormLandlord
             // 
             // tabPage1
             // 
-            this.tabPage1.Controls.Add(this.btnBuildAptRemove);
+            this.tabPage1.Controls.Add(this.btnBuildBuildingsRefresh);
+            this.tabPage1.Controls.Add(this.lblBuildMessage);
+            this.tabPage1.Controls.Add(this.btnBuildBuildingDelete);
+            this.tabPage1.Controls.Add(this.btnBuildBuildingEdit);
+            this.tabPage1.Controls.Add(this.btnBuildBuildingCreate);
+            this.tabPage1.Controls.Add(this.txtBuildAdress);
+            this.tabPage1.Controls.Add(this.DGBuildBuildings);
+            this.tabPage1.Controls.Add(this.lblBuildBuildingTop);
+            this.tabPage1.Controls.Add(this.lblBuildApartmentTop);
+            this.tabPage1.Controls.Add(this.lblBuildFloor);
+            this.tabPage1.Controls.Add(this.lblBuildSize);
+            this.tabPage1.Controls.Add(this.lblApartmentNo);
+            this.tabPage1.Controls.Add(this.lblBuildApartment);
+            this.tabPage1.Controls.Add(this.btnBuildApartmentRefresh);
+            this.tabPage1.Controls.Add(this.DGBuildApartments);
+            this.tabPage1.Controls.Add(this.btnBuildAptDelete);
             this.tabPage1.Controls.Add(this.btnBuildAptEdit);
             this.tabPage1.Controls.Add(this.btnBuildAptAdd);
             this.tabPage1.Controls.Add(this.NumBuildAptFloor);
@@ -545,67 +602,256 @@ namespace FormLandlord
             this.tabPage1.Text = "Byggnader";
             this.tabPage1.UseVisualStyleBackColor = true;
             // 
-            // Användarnamn
+            // btnBuildBuildingsRefresh
             // 
-            this.Användarnamn.HeaderText = "cUsername";
-            this.Användarnamn.Name = "Användarnamn";
-            this.Användarnamn.Width = 351;
+            this.btnBuildBuildingsRefresh.Location = new System.Drawing.Point(21, 456);
+            this.btnBuildBuildingsRefresh.Name = "btnBuildBuildingsRefresh";
+            this.btnBuildBuildingsRefresh.Size = new System.Drawing.Size(204, 54);
+            this.btnBuildBuildingsRefresh.TabIndex = 22;
+            this.btnBuildBuildingsRefresh.Text = "Läs in Byggnader";
+            this.btnBuildBuildingsRefresh.UseVisualStyleBackColor = true;
+            this.btnBuildBuildingsRefresh.Click += new System.EventHandler(this.btnBuildBuildingsRefresh_Click);
             // 
-            // CBBuildBuilding
+            // lblBuildMessage
             // 
-            this.CBBuildBuilding.FormattingEnabled = true;
-            this.CBBuildBuilding.Location = new System.Drawing.Point(929, 73);
-            this.CBBuildBuilding.Name = "CBBuildBuilding";
-            this.CBBuildBuilding.Size = new System.Drawing.Size(162, 24);
-            this.CBBuildBuilding.TabIndex = 0;
+            this.lblBuildMessage.AutoSize = true;
+            this.lblBuildMessage.Location = new System.Drawing.Point(21, 518);
+            this.lblBuildMessage.Name = "lblBuildMessage";
+            this.lblBuildMessage.Size = new System.Drawing.Size(78, 17);
+            this.lblBuildMessage.TabIndex = 21;
+            this.lblBuildMessage.Text = "Status: Kör";
             // 
-            // NumBuildAptNo
+            // btnBuildBuildingDelete
             // 
-            this.NumBuildAptNo.Location = new System.Drawing.Point(929, 125);
-            this.NumBuildAptNo.Name = "NumBuildAptNo";
-            this.NumBuildAptNo.Size = new System.Drawing.Size(162, 22);
-            this.NumBuildAptNo.TabIndex = 2;
+            this.btnBuildBuildingDelete.Location = new System.Drawing.Point(21, 208);
+            this.btnBuildBuildingDelete.Name = "btnBuildBuildingDelete";
+            this.btnBuildBuildingDelete.Size = new System.Drawing.Size(204, 23);
+            this.btnBuildBuildingDelete.TabIndex = 20;
+            this.btnBuildBuildingDelete.Text = "Ta Bort";
+            this.btnBuildBuildingDelete.UseVisualStyleBackColor = true;
+            this.btnBuildBuildingDelete.Click += new System.EventHandler(this.btnBuildBuildingDelete_Click);
             // 
-            // NumBuildAptSize
+            // btnBuildBuildingEdit
             // 
-            this.NumBuildAptSize.Location = new System.Drawing.Point(929, 173);
-            this.NumBuildAptSize.Name = "NumBuildAptSize";
-            this.NumBuildAptSize.Size = new System.Drawing.Size(162, 22);
-            this.NumBuildAptSize.TabIndex = 3;
+            this.btnBuildBuildingEdit.Location = new System.Drawing.Point(21, 164);
+            this.btnBuildBuildingEdit.Name = "btnBuildBuildingEdit";
+            this.btnBuildBuildingEdit.Size = new System.Drawing.Size(204, 23);
+            this.btnBuildBuildingEdit.TabIndex = 19;
+            this.btnBuildBuildingEdit.Text = "Ändra";
+            this.btnBuildBuildingEdit.UseVisualStyleBackColor = true;
+            this.btnBuildBuildingEdit.Click += new System.EventHandler(this.btnBuildBuildingEdit_Click);
             // 
-            // NumBuildAptFloor
+            // btnBuildBuildingCreate
             // 
-            this.NumBuildAptFloor.Location = new System.Drawing.Point(929, 217);
-            this.NumBuildAptFloor.Name = "NumBuildAptFloor";
-            this.NumBuildAptFloor.Size = new System.Drawing.Size(162, 22);
-            this.NumBuildAptFloor.TabIndex = 4;
+            this.btnBuildBuildingCreate.Location = new System.Drawing.Point(21, 118);
+            this.btnBuildBuildingCreate.Name = "btnBuildBuildingCreate";
+            this.btnBuildBuildingCreate.Size = new System.Drawing.Size(204, 23);
+            this.btnBuildBuildingCreate.TabIndex = 18;
+            this.btnBuildBuildingCreate.Text = "Lägg Till";
+            this.btnBuildBuildingCreate.UseVisualStyleBackColor = true;
+            this.btnBuildBuildingCreate.Click += new System.EventHandler(this.btnBuildBuildingCreate_Click);
             // 
-            // btnBuildAptAdd
+            // txtBuildAdress
             // 
-            this.btnBuildAptAdd.Location = new System.Drawing.Point(929, 264);
-            this.btnBuildAptAdd.Name = "btnBuildAptAdd";
-            this.btnBuildAptAdd.Size = new System.Drawing.Size(162, 23);
-            this.btnBuildAptAdd.TabIndex = 5;
-            this.btnBuildAptAdd.Text = "Lägg till";
-            this.btnBuildAptAdd.UseVisualStyleBackColor = true;
+            this.txtBuildAdress.Location = new System.Drawing.Point(21, 67);
+            this.txtBuildAdress.Name = "txtBuildAdress";
+            this.txtBuildAdress.Size = new System.Drawing.Size(204, 22);
+            this.txtBuildAdress.TabIndex = 17;
+            this.txtBuildAdress.Text = "Adress";
+            // 
+            // DGBuildBuildings
+            // 
+            this.DGBuildBuildings.AllowUserToAddRows = false;
+            this.DGBuildBuildings.AllowUserToDeleteRows = false;
+            this.DGBuildBuildings.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.DGBuildBuildings.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
+            this.cBuildingNo,
+            this.cAddress});
+            this.DGBuildBuildings.Location = new System.Drawing.Point(243, 67);
+            this.DGBuildBuildings.Name = "DGBuildBuildings";
+            this.DGBuildBuildings.ReadOnly = true;
+            this.DGBuildBuildings.RowTemplate.Height = 24;
+            this.DGBuildBuildings.Size = new System.Drawing.Size(279, 443);
+            this.DGBuildBuildings.TabIndex = 16;
+            // 
+            // cBuildingNo
+            // 
+            this.cBuildingNo.HeaderText = "ID";
+            this.cBuildingNo.Name = "cBuildingNo";
+            this.cBuildingNo.Width = 50;
+            // 
+            // cAddress
+            // 
+            this.cAddress.HeaderText = "Adress";
+            this.cAddress.Name = "cAddress";
+            this.cAddress.Width = 200;
+            // 
+            // lblBuildBuildingTop
+            // 
+            this.lblBuildBuildingTop.AutoSize = true;
+            this.lblBuildBuildingTop.Font = new System.Drawing.Font("Century Gothic", 16.2F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblBuildBuildingTop.Location = new System.Drawing.Point(15, 13);
+            this.lblBuildBuildingTop.Name = "lblBuildBuildingTop";
+            this.lblBuildBuildingTop.Size = new System.Drawing.Size(163, 34);
+            this.lblBuildBuildingTop.TabIndex = 15;
+            this.lblBuildBuildingTop.Text = "Byggnader";
+            // 
+            // lblBuildApartmentTop
+            // 
+            this.lblBuildApartmentTop.AutoSize = true;
+            this.lblBuildApartmentTop.Font = new System.Drawing.Font("Century Gothic", 16.2F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblBuildApartmentTop.Location = new System.Drawing.Point(558, 13);
+            this.lblBuildApartmentTop.Name = "lblBuildApartmentTop";
+            this.lblBuildApartmentTop.Size = new System.Drawing.Size(168, 34);
+            this.lblBuildApartmentTop.TabIndex = 14;
+            this.lblBuildApartmentTop.Text = "Lägenheter";
+            // 
+            // lblBuildFloor
+            // 
+            this.lblBuildFloor.AutoSize = true;
+            this.lblBuildFloor.Location = new System.Drawing.Point(564, 210);
+            this.lblBuildFloor.Name = "lblBuildFloor";
+            this.lblBuildFloor.Size = new System.Drawing.Size(56, 17);
+            this.lblBuildFloor.TabIndex = 13;
+            this.lblBuildFloor.Text = "Våning:";
+            // 
+            // lblBuildSize
+            // 
+            this.lblBuildSize.AutoSize = true;
+            this.lblBuildSize.Location = new System.Drawing.Point(561, 168);
+            this.lblBuildSize.Name = "lblBuildSize";
+            this.lblBuildSize.Size = new System.Drawing.Size(56, 17);
+            this.lblBuildSize.TabIndex = 12;
+            this.lblBuildSize.Text = "Storlek:";
+            // 
+            // lblApartmentNo
+            // 
+            this.lblApartmentNo.AutoSize = true;
+            this.lblApartmentNo.Location = new System.Drawing.Point(558, 118);
+            this.lblApartmentNo.Name = "lblApartmentNo";
+            this.lblApartmentNo.Size = new System.Drawing.Size(98, 17);
+            this.lblApartmentNo.TabIndex = 11;
+            this.lblApartmentNo.Text = "Lägenhets Nr:";
+            // 
+            // lblBuildApartment
+            // 
+            this.lblBuildApartment.AutoSize = true;
+            this.lblBuildApartment.Location = new System.Drawing.Point(558, 69);
+            this.lblBuildApartment.Name = "lblBuildApartment";
+            this.lblBuildApartment.Size = new System.Drawing.Size(68, 17);
+            this.lblBuildApartment.TabIndex = 10;
+            this.lblBuildApartment.Text = "Byggnad:";
+            // 
+            // btnBuildApartmentRefresh
+            // 
+            this.btnBuildApartmentRefresh.Location = new System.Drawing.Point(665, 456);
+            this.btnBuildApartmentRefresh.Name = "btnBuildApartmentRefresh";
+            this.btnBuildApartmentRefresh.Size = new System.Drawing.Size(162, 54);
+            this.btnBuildApartmentRefresh.TabIndex = 9;
+            this.btnBuildApartmentRefresh.Text = "Läs in Lägenheter";
+            this.btnBuildApartmentRefresh.UseVisualStyleBackColor = true;
+            this.btnBuildApartmentRefresh.Click += new System.EventHandler(this.btnBuildApartmentRefresh_Click);
+            // 
+            // DGBuildApartments
+            // 
+            this.DGBuildApartments.AllowUserToAddRows = false;
+            this.DGBuildApartments.AllowUserToDeleteRows = false;
+            this.DGBuildApartments.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.DGBuildApartments.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
+            this.cAptNo,
+            this.cSize,
+            this.cFloor});
+            this.DGBuildApartments.Location = new System.Drawing.Point(845, 66);
+            this.DGBuildApartments.Name = "DGBuildApartments";
+            this.DGBuildApartments.ReadOnly = true;
+            this.DGBuildApartments.RowTemplate.Height = 24;
+            this.DGBuildApartments.Size = new System.Drawing.Size(299, 444);
+            this.DGBuildApartments.TabIndex = 8;
+            // 
+            // cAptNo
+            // 
+            this.cAptNo.HeaderText = "Lägenhet";
+            this.cAptNo.Name = "cAptNo";
+            this.cAptNo.ReadOnly = true;
+            // 
+            // cSize
+            // 
+            this.cSize.HeaderText = "Storlek";
+            this.cSize.Name = "cSize";
+            this.cSize.ReadOnly = true;
+            this.cSize.Width = 80;
+            // 
+            // cFloor
+            // 
+            this.cFloor.HeaderText = "Våning";
+            this.cFloor.Name = "cFloor";
+            this.cFloor.ReadOnly = true;
+            this.cFloor.Width = 80;
+            // 
+            // btnBuildAptDelete
+            // 
+            this.btnBuildAptDelete.Location = new System.Drawing.Point(665, 336);
+            this.btnBuildAptDelete.Name = "btnBuildAptDelete";
+            this.btnBuildAptDelete.Size = new System.Drawing.Size(162, 23);
+            this.btnBuildAptDelete.TabIndex = 7;
+            this.btnBuildAptDelete.Text = "Ta Bort";
+            this.btnBuildAptDelete.UseVisualStyleBackColor = true;
+            this.btnBuildAptDelete.Click += new System.EventHandler(this.btnBuildAptDelete_Click);
             // 
             // btnBuildAptEdit
             // 
-            this.btnBuildAptEdit.Location = new System.Drawing.Point(929, 304);
+            this.btnBuildAptEdit.Location = new System.Drawing.Point(665, 297);
             this.btnBuildAptEdit.Name = "btnBuildAptEdit";
             this.btnBuildAptEdit.Size = new System.Drawing.Size(162, 23);
             this.btnBuildAptEdit.TabIndex = 6;
             this.btnBuildAptEdit.Text = "Ändra";
             this.btnBuildAptEdit.UseVisualStyleBackColor = true;
+            this.btnBuildAptEdit.Click += new System.EventHandler(this.btnBuildAptEdit_Click);
             // 
-            // btnBuildAptRemove
+            // btnBuildAptAdd
             // 
-            this.btnBuildAptRemove.Location = new System.Drawing.Point(929, 343);
-            this.btnBuildAptRemove.Name = "btnBuildAptRemove";
-            this.btnBuildAptRemove.Size = new System.Drawing.Size(162, 23);
-            this.btnBuildAptRemove.TabIndex = 7;
-            this.btnBuildAptRemove.Text = "Ta Bort";
-            this.btnBuildAptRemove.UseVisualStyleBackColor = true;
+            this.btnBuildAptAdd.Location = new System.Drawing.Point(665, 257);
+            this.btnBuildAptAdd.Name = "btnBuildAptAdd";
+            this.btnBuildAptAdd.Size = new System.Drawing.Size(162, 23);
+            this.btnBuildAptAdd.TabIndex = 5;
+            this.btnBuildAptAdd.Text = "Lägg till";
+            this.btnBuildAptAdd.UseVisualStyleBackColor = true;
+            this.btnBuildAptAdd.Click += new System.EventHandler(this.btnBuildAptAdd_Click);
+            // 
+            // NumBuildAptFloor
+            // 
+            this.NumBuildAptFloor.Location = new System.Drawing.Point(665, 210);
+            this.NumBuildAptFloor.Name = "NumBuildAptFloor";
+            this.NumBuildAptFloor.Size = new System.Drawing.Size(162, 22);
+            this.NumBuildAptFloor.TabIndex = 4;
+            // 
+            // NumBuildAptSize
+            // 
+            this.NumBuildAptSize.Location = new System.Drawing.Point(665, 166);
+            this.NumBuildAptSize.Name = "NumBuildAptSize";
+            this.NumBuildAptSize.Size = new System.Drawing.Size(162, 22);
+            this.NumBuildAptSize.TabIndex = 3;
+            // 
+            // NumBuildAptNo
+            // 
+            this.NumBuildAptNo.Location = new System.Drawing.Point(665, 118);
+            this.NumBuildAptNo.Maximum = new decimal(new int[] {
+            9999,
+            0,
+            0,
+            0});
+            this.NumBuildAptNo.Name = "NumBuildAptNo";
+            this.NumBuildAptNo.Size = new System.Drawing.Size(162, 22);
+            this.NumBuildAptNo.TabIndex = 2;
+            // 
+            // CBBuildBuilding
+            // 
+            this.CBBuildBuilding.FormattingEnabled = true;
+            this.CBBuildBuilding.Location = new System.Drawing.Point(665, 66);
+            this.CBBuildBuilding.Name = "CBBuildBuilding";
+            this.CBBuildBuilding.Size = new System.Drawing.Size(162, 24);
+            this.CBBuildBuilding.TabIndex = 0;
+            this.CBBuildBuilding.SelectedIndexChanged += new System.EventHandler(this.CBBuildBuilding_SelectedIndexChanged);
             // 
             // Form1
             // 
@@ -624,9 +870,12 @@ namespace FormLandlord
             this.tabPage5.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dGWNewUser)).EndInit();
             this.tabPage1.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.NumBuildAptNo)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.NumBuildAptSize)).EndInit();
+            this.tabPage1.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.DGBuildBuildings)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.DGBuildApartments)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.NumBuildAptFloor)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.NumBuildAptSize)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.NumBuildAptNo)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -679,14 +928,35 @@ namespace FormLandlord
         private System.Windows.Forms.DataGridViewTextBoxColumn cHouse;
         private System.Windows.Forms.DataGridViewTextBoxColumn cText;
         private TabPage tabPage1;
-        private DataGridViewTextBoxColumn Användarnamn;
         private NumericUpDown NumBuildAptNo;
         private ComboBox CBBuildBuilding;
-        private Button btnBuildAptRemove;
+        private Button btnBuildAptDelete;
         private Button btnBuildAptEdit;
         private Button btnBuildAptAdd;
         private NumericUpDown NumBuildAptFloor;
         private NumericUpDown NumBuildAptSize;
+        private Button btnBuildBuildingDelete;
+        private Button btnBuildBuildingEdit;
+        private Button btnBuildBuildingCreate;
+        private TextBox txtBuildAdress;
+        private DataGridView DGBuildBuildings;
+        private Label lblBuildBuildingTop;
+        private Label lblBuildApartmentTop;
+        private Label lblBuildFloor;
+        private Label lblBuildSize;
+        private Label lblApartmentNo;
+        private Label lblBuildApartment;
+        private Button btnBuildApartmentRefresh;
+        private DataGridView DGBuildApartments;
+        private Label lblBuildMessage;
+        private DataGridViewTextBoxColumn cBuildingNo;
+        private DataGridViewTextBoxColumn cAddress;
+        private DataGridViewTextBoxColumn cAptNo;
+        private DataGridViewTextBoxColumn cSize;
+        private DataGridViewTextBoxColumn cFloor;
+        private Button btnBuildBuildingsRefresh;
+        private DataGridViewTextBoxColumn Användarnamn;
+        private DataGridViewTextBoxColumn cPass;
     }
 }
 
